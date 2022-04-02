@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+//Imports
+import React, { useState } from "react";
+import { Divider } from "antd";
+import GUN from "gun";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+//Components
+import TitleSegment from "./components/TitleSegment";
+import Viewer from "./components/Viewer"
+import SVGUploadForm from "./components/SVGUploadForm";
+
+export default function App(){
+	//Contains all individual components as well as GUN instance and control
+
+	//Returns a JSX component for the overall application
+	return(
+		<div
+            style={{
+                textAlign: "center",
+            }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+            <TitleSegment />
+            <Divider />
+            <Viewer />
+            <Divider />
+            <SVGUploadForm />
+        </div>
 
-export default App;
+	);
+}
