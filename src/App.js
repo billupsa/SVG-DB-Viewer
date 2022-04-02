@@ -11,6 +11,9 @@ import SVGUploadForm from "./components/SVGUploadForm";
 export default function App(){
 	//Contains all individual components as well as GUN instance and control
 
+    //initialize gun
+    const gun = GUN();
+
     //States
     //Current SVG Displayed
     const [ svg,setSVG ]=useState({
@@ -41,20 +44,35 @@ export default function App(){
         "Ethereum Logo",
     ]);
 
-    // Callback function to update the SVG from the selector
-    const changeCurrentSVG = (selectionTitle) => {
-        // For now, do nothing of importance
-        console.log(`Selected ${selectionTitle}`);
-    };
 
     //callback function to update the SVG within a child component
     const updateSVG = (newSVG) => {
         //update the GUN database with the new SVG
+        gun.get(newSVG.title).put({
+            title :newSVG.title,
+            svg: newSVG.svg,
+        })
 
         //update the SVG name list
         setSVGNameList(svgNameList.concat(newSVG.title));
     };
 
+    // Callback function to update the SVG from the selector
+    const changeCurrentSVG = (selectionTitle) => {
+        //ensure that the previously selected SVG is pushed to GUN
+        gun.get(svg.title).put({
+            title: svg.title,
+            svg: svg.svg,
+        });
+
+        //get the new SVG from GUN and update the state
+        gun.get(selectionTitle).on((data, key) => {
+            setSVG({
+                title: data.title,
+                svg: data.svg,
+            });
+        });
+    };
 
     // Returns a JSX component for the overall application
     return (
